@@ -1,0 +1,60 @@
+﻿using LinasMovieList.Data;
+using LinasMovieList.Models;
+using Microsoft.Data.SqlClient;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace LinasMovieList.Repositories
+{
+    internal class MovieRepository
+    {
+        private readonly DatabaseConnection _dbConnection;
+
+        public MovieRepository()
+        {
+            _dbConnection = new DatabaseConnection();
+        }
+
+        public List<Movie> GetAllMovies()
+        {
+            //En tom lista som fylls på
+            var movies = new List<Movie>();
+
+            //SQL-frågan (samma som min tidigare query i ssms)
+            string sql = @"
+                SELECT m.Id, m.Title, m.ReleaseYear, m.GenreId, g.GenreName
+                FROM Movies m
+                JOIN Genres g ON m.GenreId = g.Id
+                ORDER BY m.Title";
+
+            //Hämtar en anslutning och öppna den. using stänger den automatiskt.
+            using var connection = _dbConnection.GetConnection();
+            connection.Open();
+
+            //Ett kommando bär SQL-frågan till databasen
+            using var command = new SqlCommand(sql, connection);
+
+
+            //Kör frågan. Readern perkar på svaret, rad för rad.
+            using var reader = command.ExecuteReader();
+
+            while(reader.Read())
+            {
+                var movie = new Movie
+                {
+                    Id = reader.GetInt32(0),          // kolumn 0 i SELECT = m.Id
+                    Title = reader.GetString(1),      // kolumn 1 = m.Title
+                    ReleaseYear = reader.GetInt32(2), // kolumn 2 = m.ReleaseYear
+                    GenreId = reader.GetInt32(3),     // kolumn 3 = m.GenreId
+                    GenreName = reader.GetString(4)   // kolumn 4 = g.GenreName
+                };
+
+                movies.Add(movie);
+            }
+
+            return movies;
+
+        }
+    }
+}

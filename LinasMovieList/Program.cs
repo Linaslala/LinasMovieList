@@ -1,5 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
-using LinasMovieList.Data;
+﻿using LinasMovieList.Data;
+using LinasMovieList.Repositories;
+using Microsoft.Data.SqlClient;
 
 
 namespace LinasMovieList
@@ -8,11 +9,17 @@ namespace LinasMovieList
     {
         static void Main(string[] args)
         {
-            var db = new DatabaseConnection();
+            //var db = new DatabaseConnection();
 
-            using var connection = db.GetConnection();
-            connection.Open();
-            Console.WriteLine("Connected!");
+            //using var connection = db.GetConnection();
+            //connection.Open();
+
+            var repo = new MovieRepository();
+            foreach (var movie in repo.GetAllMovies())
+            {
+                Console.WriteLine(movie);
+            }
+
         }
     }
 }
