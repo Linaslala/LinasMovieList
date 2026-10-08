@@ -17,5 +17,10 @@ namespace LinasMovieList.Models
 
         public string GenreName { get; set; } = string.Empty;
 
+        public override string ToString()
+        {
+            return $"{Title}, {ReleaseYear}, {GenreName}";
+        }
+
     }
 }
