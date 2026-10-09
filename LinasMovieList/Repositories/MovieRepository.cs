@@ -1,6 +1,7 @@
 ﻿using LinasMovieList.Data;
 using LinasMovieList.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,11 +36,10 @@ namespace LinasMovieList.Repositories
             //Ett kommando bär SQL-frågan till databasen
             using var command = new SqlCommand(sql, connection);
 
-
             //Kör frågan. Readern perkar på svaret, rad för rad.
             using var reader = command.ExecuteReader();
 
-            while(reader.Read())
+            while (reader.Read())
             {
                 var movie = new Movie
                 {
@@ -54,7 +54,49 @@ namespace LinasMovieList.Repositories
             }
 
             return movies;
+        }
 
+        public List<Movie> GetMovieByGenre(string genreName)
+        {
+            //En tom lista som fylls på
+            var movies = new List<Movie>();
+
+            //SQL-frågan
+            string sqlQuery = @"
+                SELECT m.Id, m.Title, m.ReleaseYear, m.GenreId, g.GenreName
+                FROM Movies m
+                JOIN Genres g ON m.GenreId = g.Id
+                WHERE g.GenreName = @GenreName
+                ORDER BY m.Title";
+
+            //Hämtar en anslutning och öppna den. using stänger den automatiskt.
+            using var connection = _dbConnection.GetConnection();
+            connection.Open();
+
+            //Ett kommando bär SQL-frågan till databasen
+            using var command = new SqlCommand(sqlQuery, connection);
+
+            //Parametiserad fråga
+            command.Parameters.AddWithValue("@GenreName", genreName);
+
+            //Kör frågan. Readern perkar på svaret, rad för rad.
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var movie = new Movie
+                {
+                    Id = reader.GetInt32(0),          // kolumn 0 i SELECT = m.Id
+                    Title = reader.GetString(1),      // kolumn 1 = m.Title
+                    ReleaseYear = reader.GetInt32(2), // kolumn 2 = m.ReleaseYear
+                    GenreId = reader.GetInt32(3),     // kolumn 3 = m.GenreId
+                    GenreName = reader.GetString(4)   // kolumn 4 = g.GenreName
+                };
+
+                movies.Add(movie);
+            }
+
+            return movies;
         }
     }
 }

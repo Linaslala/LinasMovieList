@@ -9,13 +9,20 @@ namespace LinasMovieList
     {
         static void Main(string[] args)
         {
-            //var db = new DatabaseConnection();
-
-            //using var connection = db.GetConnection();
-            //connection.Open();
 
             var repo = new MovieRepository();
-            foreach (var movie in repo.GetAllMovies())
+
+            Console.Write("Ange genre: ");
+            string genreNameInput = Console.ReadLine()!;
+
+            var movies = repo.GetMovieByGenre(genreNameInput);
+
+            if(movies.Count == 0)
+            {
+                Console.WriteLine("Inga filmer finns i denna genre");
+            }
+
+            foreach (var movie in movies)
             {
                 Console.WriteLine(movie);
             }
