@@ -6,5 +6,7 @@ namespace LinasMovieList.UI
 {
     internal class StartMenu
     {
+
+
     }
 }

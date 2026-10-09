@@ -1,4 +1,5 @@
 ﻿using LinasMovieList.Repositories;
+using LinasMovieList.UI;
 
 
 namespace LinasMovieList
@@ -7,9 +8,8 @@ namespace LinasMovieList
     {
         static void Main(string[] args)
         {
-
-           
-
+            var startMenu = new StartMenu();
+            startMenu.Run();
         }
     }
 }
