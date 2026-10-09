@@ -15,7 +15,6 @@
 
             while (running)
             {
-                Console.WriteLine();
                 Console.WriteLine("--- FILMER ---");
                 Console.WriteLine("1. Visa alla filmer");
                 Console.WriteLine("2. Sök filmer efter genre");
@@ -34,12 +33,12 @@
                     case "2":
                         _menuCase.SearchByGenre();
                         break;
-                    case "3":
-                       _menuCase.AddMovie();
-                        break;
-                    case "4":
-                        _menuCase.DeleteMovie();
-                        break;
+                    //case "3":
+                    //   _menuCase.AddMovie();
+                    //    break;
+                    //case "4":
+                    //    _menuCase.DeleteMovie();
+                    //    break;
                     case "0":
                         running = false;
                         Console.WriteLine("Hej då!");

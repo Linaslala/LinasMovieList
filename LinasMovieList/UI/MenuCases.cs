@@ -1,30 +1,50 @@
-﻿using LinasMovieList.Repositories;
+﻿using LinasMovieList.Models;
+using LinasMovieList.Repositories;
 
 namespace LinasMovieList.UI
 {
     internal class MenuCases
     {
-        private readonly MovieRepository _repo = new MovieRepository;
+        private readonly MovieRepository _repo = new MovieRepository();
 
-
-        internal static void ShowAllMovies()
+        public void ShowAllMovies()
         {
-            throw new NotImplementedException();
-        }
-
-        public void ShowAllMovies(MovieRepository repo)
-        {
-            foreach (var movie in repo.GetAllMovies())
+            foreach (var movie in _repo.GetAllMovies())
             {
                 Console.WriteLine(movie);
             }
         }
 
+        public void SearchByGenre()
+        {
+            foreach (var genre in _repo.GetAllGenres())
+            {
+                Console.WriteLine(genre);
+            }
 
-        //                foreach (var genre in repo.GetAllGenres())
-        //            {
-        //                Console.WriteLine(genre);
-        //            }
+            Console.Write("Ange genre-id: ");
+            if (!int.TryParse(Console.ReadLine(), out int genreIdInput))
+            {
+                Console.WriteLine("Du måste skriva en siffra.");
+                return;
+            }
+
+            List<Movie> movies = _repo.GetMovieByGenre(genreIdInput);
+
+            // Tom lista = ingen träff
+            if (movies.Count == 0)
+            {
+                Console.WriteLine("Inga filmer hittades.");
+                return;   // avsluta metoden, tillbaka till menyn
+            }
+
+            // Skriv ut träffarna
+            foreach (var movie in movies)
+            {
+                Console.WriteLine(movie);
+            }
+        }
+
 
         //    Console.Write("Ange genre-id: ");
         //            int genreInput = int.Parse(Console.ReadLine());

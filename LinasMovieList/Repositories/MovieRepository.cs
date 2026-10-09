@@ -56,7 +56,7 @@ namespace LinasMovieList.Repositories
             return movies;
         }
 
-        public List<Movie> GetMovieByGenre(string genreName)
+        public List<Movie> GetMovieByGenre(int genreId)
         {
             //En tom lista som fylls på
             var movies = new List<Movie>();
@@ -66,7 +66,7 @@ namespace LinasMovieList.Repositories
                 SELECT m.Id, m.Title, m.ReleaseYear, m.GenreId, g.GenreName
                 FROM Movies m
                 JOIN Genres g ON m.GenreId = g.Id
-                WHERE g.GenreName = @GenreName
+                WHERE g.Id = @GenreId
                 ORDER BY m.Title";
 
             //Hämtar en anslutning och öppna den. using stänger den automatiskt.
@@ -77,7 +77,7 @@ namespace LinasMovieList.Repositories
             using var command = new SqlCommand(sqlQuery, connection);
 
             //Parametiserad fråga
-            command.Parameters.AddWithValue("@GenreName", genreName);
+            command.Parameters.AddWithValue("@GenreId", genreId);
 
             //Kör frågan. Readern perkar på svaret, rad för rad.
             using var reader = command.ExecuteReader();
