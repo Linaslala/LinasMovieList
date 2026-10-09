@@ -98,5 +98,40 @@ namespace LinasMovieList.Repositories
 
             return movies;
         }
+
+        public List<Genre> GetAllGenres()
+        {
+            //En tom lista som fylls på
+            var genres = new List<Genre>();
+
+            //SQL-frågan (samma som min tidigare query i ssms)
+            string sqlQuery = @"
+                SELECT g.Id, g.GenreName
+                FROM Genres g
+                ORDER BY g.GenreName";
+
+            //Hämtar en anslutning och öppna den. using stänger den automatiskt.
+            using var connection = _dbConnection.GetConnection();
+            connection.Open();
+
+            //Ett kommando bär SQL-frågan till databasen
+            using var command = new SqlCommand(sqlQuery, connection);
+
+            //Kör frågan. Readern perkar på svaret, rad för rad.
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var genre = new Genre
+                { 
+                    Id = reader.GetInt32(0),
+                    GenreName = reader.GetString(1)
+                };
+
+                genres.Add(genre);
+            }
+
+            return genres;
+        }
     }
 }
