@@ -15,13 +15,15 @@
 
             while (running)
             {
-                Console.WriteLine("--- FILMER ---");
+                Console.Clear();
+
+                Console.WriteLine("=== LINAS MOVIE SHACK ===\n");
                 Console.WriteLine("1. Visa alla filmer");
                 Console.WriteLine("2. Sök filmer efter genre");
                 Console.WriteLine("3. Lägg till film");
                 Console.WriteLine("4. Ta bort film");
                 Console.WriteLine("0. Avsluta\n");
-                Console.Write("Välj: \n");
+                Console.Write("Välj: ");
 
                 string? choice = Console.ReadLine();
 
@@ -41,6 +43,7 @@
                         break;
                     case "0":
                         running = false;
+                        Console.WriteLine();
                         Console.WriteLine("Hej då!");
                         break;
                     default:
