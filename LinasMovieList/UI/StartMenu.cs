@@ -20,8 +20,8 @@
                 Console.WriteLine("2. Sök filmer efter genre");
                 Console.WriteLine("3. Lägg till film");
                 Console.WriteLine("4. Ta bort film");
-                Console.WriteLine("0. Avsluta");
-                Console.Write("Välj: ");
+                Console.WriteLine("0. Avsluta\n");
+                Console.Write("Välj: \n");
 
                 string? choice = Console.ReadLine();
 
@@ -33,12 +33,12 @@
                     case "2":
                         _menuCase.SearchByGenre();
                         break;
-                    //case "3":
-                    //   _menuCase.AddMovie();
-                    //    break;
-                    //case "4":
-                    //    _menuCase.DeleteMovie();
-                    //    break;
+                    case "3":
+                        _menuCase.AddMovie();
+                        break;
+                    case "4":
+                        _menuCase.DeleteMovie();
+                        break;
                     case "0":
                         running = false;
                         Console.WriteLine("Hej då!");

@@ -1,10 +1,6 @@
 ﻿using LinasMovieList.Data;
 using LinasMovieList.Models;
 using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LinasMovieList.Repositories
 {
@@ -27,7 +23,7 @@ namespace LinasMovieList.Repositories
                 SELECT m.Id, m.Title, m.ReleaseYear, m.GenreId, g.GenreName
                 FROM Movies m
                 JOIN Genres g ON m.GenreId = g.Id
-                ORDER BY m.Title";
+                ORDER BY m.Id";
 
             //Hämtar en anslutning och öppna den. using stänger den automatiskt.
             using var connection = _dbConnection.GetConnection();
@@ -43,11 +39,11 @@ namespace LinasMovieList.Repositories
             {
                 var movie = new Movie
                 {
-                    Id = reader.GetInt32(0),          // kolumn 0 i SELECT = m.Id
-                    Title = reader.GetString(1),      // kolumn 1 = m.Title
-                    ReleaseYear = reader.GetInt32(2), // kolumn 2 = m.ReleaseYear
-                    GenreId = reader.GetInt32(3),     // kolumn 3 = m.GenreId
-                    GenreName = reader.GetString(4)   // kolumn 4 = g.GenreName
+                    Id = reader.GetInt32(0),          
+                    Title = reader.GetString(1),      
+                    ReleaseYear = reader.GetInt32(2), 
+                    GenreId = reader.GetInt32(3),     
+                    GenreName = reader.GetString(4)   
                 };
 
                 movies.Add(movie);
@@ -56,7 +52,7 @@ namespace LinasMovieList.Repositories
             return movies;
         }
 
-        public List<Movie> GetMovieByGenre(int genreId)
+        public List<Movie> GetMoviesByGenre(int genreId)
         {
             //En tom lista som fylls på
             var movies = new List<Movie>();
@@ -67,7 +63,7 @@ namespace LinasMovieList.Repositories
                 FROM Movies m
                 JOIN Genres g ON m.GenreId = g.Id
                 WHERE g.Id = @GenreId
-                ORDER BY m.Title";
+                ORDER BY m.Id";
 
             //Hämtar en anslutning och öppna den. using stänger den automatiskt.
             using var connection = _dbConnection.GetConnection();
@@ -86,11 +82,11 @@ namespace LinasMovieList.Repositories
             {
                 var movie = new Movie
                 {
-                    Id = reader.GetInt32(0),          // kolumn 0 i SELECT = m.Id
-                    Title = reader.GetString(1),      // kolumn 1 = m.Title
-                    ReleaseYear = reader.GetInt32(2), // kolumn 2 = m.ReleaseYear
-                    GenreId = reader.GetInt32(3),     // kolumn 3 = m.GenreId
-                    GenreName = reader.GetString(4)   // kolumn 4 = g.GenreName
+                    Id = reader.GetInt32(0),          
+                    Title = reader.GetString(1),      
+                    ReleaseYear = reader.GetInt32(2), 
+                    GenreId = reader.GetInt32(3),     
+                    GenreName = reader.GetString(4)   
                 };
 
                 movies.Add(movie);
@@ -108,7 +104,7 @@ namespace LinasMovieList.Repositories
             string sqlQuery = @"
                 SELECT g.Id, g.GenreName
                 FROM Genres g
-                ORDER BY g.GenreName";
+                ORDER BY g.Id";
 
             //Hämtar en anslutning och öppna den. using stänger den automatiskt.
             using var connection = _dbConnection.GetConnection();
@@ -135,7 +131,7 @@ namespace LinasMovieList.Repositories
         }
 
         //Metoden returnerar en int (ett nytt id/en ny rad)
-        public int AddMovie(Movie movie)
+        public int AddNewMovie(Movie movie)
         {
             string sqlCommand =
             @"INSERT INTO Movies (Title, ReleaseYear, GenreId) 
@@ -153,7 +149,7 @@ namespace LinasMovieList.Repositories
             return command.ExecuteNonQuery();
         }
 
-        public int DeleteMovie(int id)
+        public int DeleteMovieFromDb(int id)
         {
             string sqlCommand =
             @"DELETE FROM Movies  
