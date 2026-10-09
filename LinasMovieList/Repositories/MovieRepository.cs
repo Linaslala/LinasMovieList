@@ -152,5 +152,21 @@ namespace LinasMovieList.Repositories
 
             return command.ExecuteNonQuery();
         }
+
+        public int DeleteMovie(int id)
+        {
+            string sqlCommand =
+            @"DELETE FROM Movies  
+            WHERE Id = @Id";
+
+            using var connection = _dbConnection.GetConnection();
+            connection.Open();
+
+            using var command = new SqlCommand(sqlCommand, connection);
+
+            command.Parameters.AddWithValue("@Id", id);
+
+            return command.ExecuteNonQuery();
+        }
     }
 }

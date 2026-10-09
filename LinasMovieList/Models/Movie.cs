@@ -19,7 +19,7 @@ namespace LinasMovieList.Models
 
         public override string ToString()
         {
-            return $"{Title}, {ReleaseYear}, {GenreName}";
+            return $"{Id}, {Title}, {ReleaseYear}, {GenreName}";
         }
 
     }

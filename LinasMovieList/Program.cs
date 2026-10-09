@@ -1,7 +1,4 @@
-﻿using LinasMovieList.Data;
-using LinasMovieList.Repositories;
-using Microsoft.Data.SqlClient;
-using LinasMovieList.Models;
+﻿using LinasMovieList.Repositories;
 
 
 namespace LinasMovieList
@@ -12,33 +9,24 @@ namespace LinasMovieList
         {
 
             var repo = new MovieRepository();
-                       
 
-            foreach (var genre in repo.GetAllGenres())
+            foreach (var movie in repo.GetAllMovies())
             {
-                Console.WriteLine(genre);
+                Console.WriteLine(movie);
             }
 
-            Console.Write("Ange genre-id: ");
-            int genreInput = int.Parse(Console.ReadLine());
-            Console.Write("Ange titel: ");
-            string titleInput = Console.ReadLine();
-            Console.Write("Ange år: ");
-            int yearInput = int.Parse(Console.ReadLine());
+            Console.Write("\nAnge movie-id: ");
+            int movieInput = int.Parse(Console.ReadLine());
 
-            var newMovie = new Movie
-            {
-                Title = titleInput,
-                ReleaseYear = yearInput,
-                GenreId = genreInput
-            };
-
-            int rows = repo.AddMovie(newMovie);
+            int rows = repo.DeleteMovie(movieInput);
 
             if (rows == 1)
             {
-                Console.Write("Filmen lades till!\n");
+                Console.Write("\nFilmen togs bort!\n");
             }
+
+            Console.ReadKey();
+            Console.WriteLine();
 
             foreach (var movie in repo.GetAllMovies())
             {
