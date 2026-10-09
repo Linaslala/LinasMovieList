@@ -73,11 +73,19 @@ namespace LinasMovieList.UI
             Console.WriteLine();
 
             Console.Write("Ange genre-id: ");
-            int genreInput = int.Parse(Console.ReadLine());
+            if (!int.TryParse(Console.ReadLine(), out int genreInput))
+            {
+                Console.WriteLine("Du måste skriva en siffra.");
+                return;
+            }
             Console.Write("Ange titel: ");
             string titleInput = Console.ReadLine();
             Console.Write("Ange år: ");
-            int yearInput = int.Parse(Console.ReadLine());
+            if (!int.TryParse(Console.ReadLine(), out int yearInput))
+            {
+                Console.WriteLine("Du måste skriva en siffra.");
+                return;
+            }
 
             var newMovie = new Movie
             {
@@ -88,15 +96,15 @@ namespace LinasMovieList.UI
 
             int rows = _repo.AddNewMovie(newMovie);
 
+            Console.WriteLine();
+
             if (rows == 1)
             {
                 Console.Write("Filmen lades till!\n");
             }
 
-            foreach (var movie in _repo.GetAllMovies())
-            {
-                Console.WriteLine(movie);
-            }
+            Console.ReadKey();
+
         }
 
         public void DeleteMovie()
@@ -113,7 +121,11 @@ namespace LinasMovieList.UI
             Console.WriteLine();
 
             Console.Write("Ange film-id: ");
-            int movieInput = int.Parse(Console.ReadLine());
+            if (!int.TryParse(Console.ReadLine(), out int movieInput))
+            {
+                Console.WriteLine("Du måste skriva en siffra.");
+                return;
+            }
 
             int rows = _repo.DeleteMovieFromDb(movieInput);
 
