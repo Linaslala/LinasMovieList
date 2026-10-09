@@ -15,5 +15,5 @@ Movie Register is a C# console application that manages movies and genres in a S
 
 ## Getting started
 1. Run the SQL script in SSMS to create the database and test data.
-2. Check the connection string in the repository class.
+2. Check the connection string in  appsettings.json.
 3. Run the application in Visual Studio.
