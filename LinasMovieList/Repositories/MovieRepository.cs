@@ -123,7 +123,7 @@ namespace LinasMovieList.Repositories
             while (reader.Read())
             {
                 var genre = new Genre
-                { 
+                {
                     Id = reader.GetInt32(0),
                     GenreName = reader.GetString(1)
                 };
@@ -132,6 +132,25 @@ namespace LinasMovieList.Repositories
             }
 
             return genres;
+        }
+
+        //Metoden returnerar en int (ett nytt id/en ny rad)
+        public int AddMovie(Movie movie)
+        {
+            string sqlCommand =
+            @"INSERT INTO Movies (Title, ReleaseYear, GenreId) 
+            VALUES (@Title, @ReleaseYear, @GenreId)";
+                       
+            using var connection = _dbConnection.GetConnection();
+            connection.Open();
+
+            using var command = new SqlCommand(sqlCommand, connection);
+
+            command.Parameters.AddWithValue("@Title", movie.Title);
+            command.Parameters.AddWithValue("@ReleaseYear", movie.ReleaseYear);
+            command.Parameters.AddWithValue("@GenreId", movie.GenreId);
+
+            return command.ExecuteNonQuery();
         }
     }
 }
